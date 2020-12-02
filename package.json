@@ -1,0 +1,10 @@
+{
+    "name": "advent-of-code",
+    "description": "",
+    "version": "0.1.0",
+    "dependencies": {
+        "bluebird": "^3.7.2",
+        "line-reader": "^0.4.0"
+    },
+    "devDependencies": {}
+}
