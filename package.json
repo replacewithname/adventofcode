@@ -4,6 +4,7 @@
     "version": "0.1.0",
     "dependencies": {
         "bluebird": "^3.7.2",
+        "itertools": "^1.6.1",
         "line-reader": "^0.4.0"
     },
     "devDependencies": {}
