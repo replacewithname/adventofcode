@@ -5,7 +5,8 @@
     "dependencies": {
         "bluebird": "^3.7.2",
         "itertools": "^1.6.1",
-        "line-reader": "^0.4.0"
+        "line-reader": "^0.4.0",
+        "underscore": "^1.12.0"
     },
     "devDependencies": {}
 }
