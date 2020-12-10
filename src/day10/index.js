@@ -1,25 +1,25 @@
 const lineReader = require('line-reader');
 const Promise = require("bluebird");
-const { connected } = require('process');
-const { DEFAULT_MIN_VERSION } = require('tls');
-const { map } = require('bluebird');
 const eachLine = Promise.promisify(lineReader.eachLine);
-const _ = require("underscore");
+const _ = require("lodash");
 
-const getNumberOfPossibleWays = numbers => {
-    let ways_from = new Array(numbers.length).fill(0)
+const possibleNextPositions = (pos, sorted_ratings) => {
+    return _.range(pos + 1,pos + 4)
+    .filter(new_pos => new_pos < sorted_ratings.length)
+    .filter(new_pos => sorted_ratings[new_pos] - sorted_ratings[pos] <= 3)
+}
+
+const numberOfPossibleWays = sorted_ratings => {
+    // A vector: How many possible ways are there from each position?
+    let ways_from = new Array(sorted_ratings.length).fill(null)
 
     // Only one choice from the end
     ways_from[ways_from.length - 1] = 1
 
     // recursively walk back
-    for(let i= ways_from.length - 2; i>=0 ; i--) {
-        let start = numbers[i]
-        _.range(1, 4).forEach(j => {
-            if (i+j < numbers.length && numbers[i+j] <= start + 3) {
-                ways_from[i] += ways_from[i+j]
-            }
-        })
+    for(let pos = ways_from.length - 2; pos>=0 ; pos--) {
+        possibleNextPositions(pos, sorted_ratings)
+        .forEach(next_pos => ways_from[pos] += ways_from[next_pos] )
     }
 
     return ways_from[0]
@@ -31,20 +31,21 @@ eachLine('input', (line) => {
     lines.push(line)
   }
 ).then( () => {
-    const numbers = [] 
-    lines.forEach(line => numbers.push(parseInt(line)))
+    const ratings = [] 
+    lines.forEach(line => ratings.push(parseInt(line)))
 
-    numbers.push(0)
-    let max = _.max(numbers)
-    numbers.push(max + 3)
-    numbers.sort((a,b) => a-b)
+    ratings.push(0)
+    ratings.push(_.max(ratings) + 3)
+    ratings.sort((a,b) => a-b)
 
-    increments = [0,0,0]
-    _.range(numbers.length -1).forEach(i => {
-        increments[numbers[i+1] - numbers[i] - 1]++
+    // How many 1,2 or 3-increments are there? Including zero-position for better readability
+    let num_increments = [0,0,0,0]
+    _.zip(ratings, ratings.slice(1))
+    .forEach(pair => {
+        num_increments[pair[1] - pair[0]]++
     })
 
-    console.log(increments[0] * increments[2])
+    console.log(num_increments[1] * num_increments[3])
     
-    console.log(getNumberOfPossibleWays(numbers))
+    console.log(numberOfPossibleWays(ratings))
 })
