@@ -16,8 +16,8 @@ const numberOfPossibleWays = sorted_ratings => {
     // Only one choice from the end
     ways_from[ways_from.length - 1] = 1
 
-    // recursively walk back
-    for(let pos = ways_from.length - 2; pos>=0 ; pos--) {
+    // recursively walk backwards
+    for(let pos = ways_from.length - 2; pos>=0; pos--) {
         possibleNextPositions(pos, sorted_ratings)
         .forEach(next_pos => ways_from[pos] += ways_from[next_pos] )
     }
