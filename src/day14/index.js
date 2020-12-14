@@ -13,7 +13,7 @@ const lineToInstruction = (line) => {
                 mask: match[3],
                 // This was from when I thought you could actually use bitwise operators in JavaScript
                 // Turns out you should never do this if you risk to have numbers above 32bits length
-                // Learned by lesson so this stays here as a monument
+                // Learned my lesson so this stays here as a monument
                 and: parseInt(match[3].replace(/X/g, 1), 2), 
                 or: parseInt(match[3].replace(/X/g, 0), 2)
             }

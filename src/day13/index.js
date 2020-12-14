@@ -2,6 +2,7 @@ const lineReader = require('line-reader');
 const Promise = require("bluebird");
 const eachLine = Promise.promisify(lineReader.eachLine);
 const _ = require("lodash");
+const mathjs = require('mathjs')
 
 const getEarlierstDeparture = (id, earliest_departure) => {
     return earliest_departure + (id - earliest_departure % id)
@@ -42,7 +43,7 @@ eachLine('input', (line) => {
             // Once we have a "correct" t for a bus, we just integrate its id in the increment and forget
             // about it
             correct_buses.forEach(bus => {
-                increase *= bus.id // Here we use that we know all ids are prime
+                increase = mathjs.lcm(increase, bus.id)
                 buses = buses.filter(iter_bus => iter_bus.id != bus.id)
             })
         }
