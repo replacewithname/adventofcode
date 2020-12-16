@@ -78,19 +78,14 @@ eachLine('input', (line) => {
         })
     })
 
-    indices_already_done = []
     while(anyRuleHasMoreThanOnePossibility(rules)) {
         rules.forEach(rule => {
             if(rule.possible_indices.length == 1) {
                 let index = rule.possible_indices[0]
-                if(!indices_already_done.includes(index)) {
-                    indices_already_done.push(index)
-                    console.log("Removing index " + index)
-                    rules.forEach(rule2 => {
-                        if(rule2 != rule)
-                            removeIndexFromRule(rule2, index)
-                    })
-                    }
+                rules.forEach(rule2 => {
+                    if(rule2 != rule)
+                        removeIndexFromRule(rule2, index)
+                })
             }
         })
     }
