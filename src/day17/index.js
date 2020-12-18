@@ -70,7 +70,7 @@ eachLine('input', (line) => {
     lines.push(line)
   }
 ).then( () => {
-    let active_points = []
+    active_points = []
 
     lines.forEach((line, y) => {
         Array.from(line).forEach((char, x) => {
@@ -80,29 +80,24 @@ eachLine('input', (line) => {
         })
     })
 
-/*    let test = isActive([0,0,0], active_points)
-
-    test = neighborsOf([0,0,0])
-
-    test = nextState([1,0,0], active_points)
-
     for(let i=0; i< 6; i++) {
-        let new_active_points = []
-        relevant_candidates = active_points.flatMap(p => {
-            return [p, ...neighborsOf(p)]
-        })
-        relevant_candidates = _.uniqWith(relevant_candidates, _.isEqual)
-
-        relevant_candidates.forEach(p => {
-            if(nextState(p, active_points)) {
-                new_active_points.push(p)
+        let num_active_neighbors = new Map()
+        active_points.flatMap(point => neighborsOf(point, active_points))
+        .forEach(neighbour => {
+            let key = neighbour.toString()
+            if(num_active_neighbors.has(key)) {
+                num_active_neighbors.get(key).num++
+            }
+            else {
+                num_active_neighbors.set(key, {point: neighbour, num: 1, is_active: isActive(neighbour, active_points)})
             }
         })
 
-        active_points = _.cloneDeep(new_active_points)
+        active_points = Array.from(num_active_neighbors.values()).filter(element => element.num == 3 || (element.num == 2 && element.is_active))
+                            .map(element => element.point)
     }
 
-    console.log(active_points.length)*/
+    console.log(active_points.length)
 
     active_points = []
 
@@ -115,23 +110,21 @@ eachLine('input', (line) => {
     })
 
     for(let i=0; i< 6; i++) {
-        console.log(active_points.length)
-
-        let new_active_points = []
-        relevant_candidates = active_points.flatMap(p => {
-            return [p, ...neighborsOf4(p)]
-        })
-        relevant_candidates = _.uniqWith(relevant_candidates, _.isEqual)
-
-        relevant_candidates.forEach(p => {
-            if(nextState4(p, active_points)) {
-                new_active_points.push(p)
+        let num_active_neighbors = new Map()
+        active_points.flatMap(point => neighborsOf4(point, active_points))
+        .forEach(neighbour => {
+            let key = neighbour.toString()
+            if(num_active_neighbors.has(key)) {
+                num_active_neighbors.get(key).num++
+            }
+            else {
+                num_active_neighbors.set(key, {point: neighbour, num: 1, is_active: isActive(neighbour, active_points)})
             }
         })
 
-        active_points = _.cloneDeep(new_active_points)
+        active_points = Array.from(num_active_neighbors.values()).filter(element => element.num == 3 || (element.num == 2 && element.is_active))
+                            .map(element => element.point)
     }
-
 
     console.log(active_points.length)
 })
