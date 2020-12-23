@@ -50,7 +50,6 @@ eachLine('input', (line) => {
     game = {cups, current_cup_index: 0}
 
     for(i of _.range(100)) {
-        console.log(i + ": " + game.cups)
         playOneRound(game)
     }
 
